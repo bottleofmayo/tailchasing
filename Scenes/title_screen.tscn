@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://8hqy2rq2jvtk"]
+
+[ext_resource type="Texture2D" uid="uid://d04ahk1cih8r0" path="res://Assets/logo.png" id="1_4gxqj"]
+[ext_resource type="Theme" uid="uid://bpq31v4mvl5gx" path="res://Assets/soft_light.tres" id="1_p3fck"]
+[ext_resource type="Script" uid="uid://bay53e2jjhspc" path="res://Scripts/start_button.gd" id="1_v6p8y"]
+[ext_resource type="Shader" uid="uid://drc71khsqqjoy" path="res://Scripts/glitch.gdshader" id="5_12m1t"]
+[ext_resource type="Shader" uid="uid://ck0g772xtdmny" path="res://Scripts/pixel.gdshader" id="6_6vd4x"]
+[ext_resource type="AudioStream" uid="uid://b3pmk11arvfv4" path="res://Assets/kenney_interface-sounds/Audio/click_001.ogg" id="6_8mikk"]
+[ext_resource type="AudioStream" uid="uid://bnrn5hr6hwrp8" path="res://Assets/kenney_interface-sounds/Audio/click_002.ogg" id="7_sqelc"]
+[ext_resource type="AudioStream" uid="uid://c3vnelcfg3ksu" path="res://Assets/kenney_interface-sounds/Audio/click_003.ogg" id="8_w5sh6"]
+[ext_resource type="AudioStream" uid="uid://hhnfbsyq5olf" path="res://Assets/kenney_interface-sounds/Audio/click_004.ogg" id="9_o1e67"]
+[ext_resource type="AudioStream" uid="uid://c8hcndcvlxrwg" path="res://Assets/kenney_interface-sounds/Audio/click_005.ogg" id="10_ycay6"]
+
+[sub_resource type="GDScript" id="GDScript_bsy20"]
+script/source = "extends Control
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_12m1t"]
+shader = ExtResource("5_12m1t")
+shader_parameter/shake_power = 0.005
+shader_parameter/shake_rate = 0.050000002375
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 15.0
+shader_parameter/shake_color_rate = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6vd4x"]
+shader = ExtResource("6_6vd4x")
+shader_parameter/exposure = 1.0
+shader_parameter/contrast = 1.05
+shader_parameter/saturation = 0.9
+shader_parameter/enable_pixelate = true
+shader_parameter/pixel_factor = 2.00000007125
+shader_parameter/enable_posterize = true
+shader_parameter/color_levels = 16.0
+shader_parameter/dither_strength = 0.35
+shader_parameter/chrom_aberration = 0.07
+shader_parameter/vignette_strength = 1.0
+shader_parameter/grain_strength = 0.2
+shader_parameter/tint_color = Vector3(0.95, 1.03, 0.9)
+shader_parameter/tint_strength = 0.15
+shader_parameter/viewport_size_override = Vector2(0, 0)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_07cxn"]
+streams_count = 5
+stream_0/stream = ExtResource("6_8mikk")
+stream_1/stream = ExtResource("7_sqelc")
+stream_2/stream = ExtResource("8_w5sh6")
+stream_3/stream = ExtResource("9_o1e67")
+stream_4/stream = ExtResource("10_ycay6")
+
+[node name="TitleScreen" type="Control" unique_id=2069265002]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_bsy20")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1581908038]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.47056437, 0.795365, 0.9350303, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=882822877]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=738098480]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/VBoxContainer" unique_id=1435056621]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+texture = ExtResource("1_4gxqj")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=223223692]
+layout_mode = 2
+theme = ExtResource("1_p3fck")
+text = "Start Game"
+script = ExtResource("1_v6p8y")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1567564431]
+layout_mode = 2
+theme = ExtResource("1_p3fck")
+text = "copyright 1996 spin to win audio-video entertainment inc."
+horizontal_alignment = 1
+
+[node name="Shader" type="CanvasLayer" parent="." unique_id=1495731127]
+layer = 100
+
+[node name="GlitchColorRect" type="ColorRect" parent="Shader" unique_id=804022571]
+material = SubResource("ShaderMaterial_12m1t")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PixelColorRect" type="ColorRect" parent="Shader" unique_id=1809109044]
+material = SubResource("ShaderMaterial_6vd4x")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ButtonClickAudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1508955368]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamRandomizer_07cxn")
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/StartButton" to="CenterContainer/VBoxContainer/StartButton" method="_on_pressed"]
